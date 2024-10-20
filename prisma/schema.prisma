@@ -1,0 +1,142 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model RoomImage {
+    url       String
+    public_id String  @unique
+    room      Room?   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+    roomId    String?
+
+    @@index([roomId])
+}
+
+model Room {
+    id             String      @id @default(cuid())
+    name           String
+    userId         String
+    user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    price          Int
+    description    String
+    address        String
+    guestCapacity  Int
+    numOfBeds      Int
+    internet       Boolean
+    breakfast      Boolean
+    airConditioned Boolean
+    petsAllowed    Boolean
+    roomCleaning   Boolean
+    ratings        Float       @default(0)
+    images         RoomImage[]
+    category       String //  KING SINGLE TWINS
+    reviews        Review[]
+    createdAt      DateTime    @default(now())
+    updatedAt      DateTime    @updatedAt
+    bookings       Booking[]
+
+    @@index([userId])
+}
+
+model Review {
+    id            String   @id @default(cuid())
+    userId        String
+    user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    rating        Int // like 5 stars or 4 stars
+    reviewComment String
+    room          Room?    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+    roomId        String?
+    bookingId     String?
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    @@unique([roomId, userId, bookingId])
+    @@index([userId])
+    @@index([roomId])
+}
+
+model BookingPaymentInfo {
+    id      String   @id
+    status  String
+    booking Booking?
+}
+
+model Booking {
+    id            String             @id @default(cuid())
+    roomId        String
+    room          Room               @relation(fields: [roomId], references: [id], onDelete: Cascade)
+    userId        String
+    user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+    checkInDate   DateTime
+    checkOutDate  DateTime
+    amountPaid    Int
+    daysOfStay    Int
+    paidOn        DateTime
+    paymentInfoId String             @unique
+    paymentInfo   BookingPaymentInfo @relation(fields: [paymentInfoId], references: [id], onDelete: Cascade)
+    reviewAdded   Boolean            @default(false)
+    createdAt     DateTime           @default(now())
+    updatedAt     DateTime           @updatedAt
+
+    @@index([roomId])
+    @@index([userId])
+}
+
+// Necessary for Next auth
+model Account {
+    id                       String  @id @default(cuid())
+    userId                   String
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String?
+    access_token             String?
+    expires_at               Int?
+    refresh_token_expires_in Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String?
+    session_state            String?
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+    @@index([userId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime? // it is needed when using email provider (like using sendgrid or sendinblue)
+    image         String?
+    role          String    @default("USER")
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    accounts      Account[]
+    sessions      Session[]
+    rooms         Room[]
+    reviews       Review[]
+    bookings      Booking[]
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
