@@ -246,7 +246,7 @@ async function main() {
         ...room,
         images: { create: images },
         // get this id from prisma studio
-        user: { connect: { id: "cm2hjau680000mou4z1lan2uy" } },
+        user: { connect: { id: "cm2hl8n860000moku5v5gkivt" } },
       },
     });
     return promise;
