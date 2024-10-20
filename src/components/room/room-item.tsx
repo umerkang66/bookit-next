@@ -15,13 +15,15 @@ const RoomItem: FC<Props> = ({ room }) => {
   return (
     <div className="w-64 overflow-hidden rounded-lg border-2 border-gray-200">
       <div className="h-36 w-full overflow-hidden">
-        <Image
-          width={250}
-          height={200}
-          src={room.images[0]!.url}
-          alt={room.name}
-          className="h-auto w-full"
-        />
+        {!!room.images.length && 
+          (<Image
+            width={250}
+            height={200}
+            src={room.images[0]!.url}
+            alt={room.name}
+            className="h-auto w-full"
+          />)
+        }
       </div>
 
       <div className="p-4">

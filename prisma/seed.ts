@@ -21,12 +21,12 @@ export const rooms = [
         url: "https://res.cloudinary.com/dvxt8pfbu/image/upload/v1695384271/bookit/rooms/kd6lxr9kolobmkafsg3x.jpg",
       },
       {
-        public_id: "bookit/rooms/oesymga3cs6qaxropids",
-        url: "https://res.cloudinary.com/dvxt8pfbu/image/upload/v1695384269/bookit/rooms/oesymga3cs6qaxropids.jpg",
+        public_id: "bookit/rooms/e2dzcklbukov1dwk87ro",
+        url: "https://res.cloudinary.com/dvxt8pfbu/image/upload/v1695384269/bookit/rooms/e2dzcklbukov1dwk87ro.jpg",
       },
       {
-        public_id: "bookit/rooms/qobahzkixv65wpwgrztt",
-        url: "https://res.cloudinary.com/dvxt8pfbu/image/upload/v1695384269/bookit/rooms/qobahzkixv65wpwgrztt.jpg",
+        public_id: "bookit/rooms/ejtn2c3cve8gxpkesmev",
+        url: "https://res.cloudinary.com/dvxt8pfbu/image/upload/v1695384269/bookit/rooms/ejtn2c3cve8gxpkesmev.jpg",
       },
     ],
     category: "KING",
@@ -246,7 +246,7 @@ async function main() {
         ...room,
         images: { create: images },
         // get this id from prisma studio
-        user: { connect: { id: "cm2hl8n860000moku5v5gkivt" } },
+        user: { connect: { id: "cm2hluzkh0000mocluz4arrmf" } },
       },
     });
     return promise;
