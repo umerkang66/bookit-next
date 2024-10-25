@@ -253,7 +253,7 @@ async function main() {
   });
 
   for (let i = 0; i < promises.length; i++) {
-    console.log(i+1, "Done");
+    console.log(i + 1, "Done");
     await promises[i];
   }
 }
